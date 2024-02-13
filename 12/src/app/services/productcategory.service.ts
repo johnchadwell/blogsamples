@@ -16,24 +16,15 @@ export class ProductCategoryService {
 
   
   get(): Observable<ProductCategory[]> {
-    console.log("environment.apiUrl: " + environment.apiUrl);
     return this.httpClient.get<ProductCategory[]>(environment.apiUrl + '/api/v1/ProductCategories');
   }  
-  // public get2(): Observable<ProductCategory[]> {
-  //   console.log("environment.apiUrl: " + environment.apiUrl);
-  //   return this.httpClient.get<ProductCategory[]>(environment.apiUrl + '/api/v1/ProductCategories');
-  // }  
 
-   create(payload:ProductCategory){
-    console.log("payload: " + payload);
+  create(payload:ProductCategory){
     return this.httpClient.post<ProductCategory>(environment.apiUrl + '/api/v1/ProductCategory', payload);
   }
 
    getById(id: number): Observable<ProductCategory> {
-    console.log("getById: " + id);
-    console.log("environment.apiUrl: " + environment.apiUrl);
     var url = environment.apiUrl + `/api/v1/ProductCategory/${id}`;
-    console.log("url: " + url);
     return this.httpClient.get<ProductCategory>(url);
   }
    
@@ -45,7 +36,6 @@ export class ProductCategoryService {
   }
 
   delete(id: number) {
-    //const headers = { 'Method': 'DELETE' };
     return this.httpClient.delete(environment.apiUrl + `/api/v1/ProductCategory/${id}`);
   }
 }
