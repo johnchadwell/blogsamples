@@ -2,7 +2,7 @@ import { Component, OnInit, Inject, AfterViewInit, ViewChild   } from '@angular/
 import { Product } from '../../../models/product';
 import { ProductCategory } from '../../../models/productcategory';
 import { ProductSubCategory } from '../../../models/productsubcategory';
-import { ProductSelection } from '../../../models/productselection';
+import {ProductService} from '../../../services/product.service';
 import {ProductCategoryService} from '../../../services/productcategory.service';
 import {ProductSubCategoryService} from '../../../services/productsubcategory.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
