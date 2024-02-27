@@ -2,9 +2,6 @@ import { of } from 'rxjs';
 import { Product } from '../../../models/product';
 import { ProductCategory } from '../../../models/productcategory';
 import { ProductSubCategory } from '../../../models/productsubcategory';
-// import {ProductService} from '../../../services/product.service';
-// import {ProductCategoryService} from '../../../services/productcategory.service';
-// import {ProductSubCategoryService} from '../../../services/productsubcategory.service';
 import {PagedResults} from '../../../models/responses/pagedresults';
 
 export const FAKE_PRODUCTCATEGORY: ProductCategory[] = 
@@ -181,61 +178,26 @@ export class ProductCategoryServiceStub {
 export class ProductSubCategoryServiceStub {
 
   getByCategoryId(productCategoryId: number) {
-      // return of(FAKE_PRODUCTSUBCATEGORY);
-      console.log("ProductSubCategoryServiceStub.getByCategoryId.productCategoryId: " + productCategoryId);
         var r = FAKE_PRODUCTSUBCATEGORY.filter(productsubcat => {return productsubcat.productCategory.productCategoryId == productCategoryId});
         console.log("ProductSubCategoryServiceStub.getByCategoryId.r: " + JSON.stringify(r));
         return of(r);
     }
 }
 
-// export class ProductServiceStub {
-
-//   getBySubCatPaged(productSubCategoryId: number, page: number, itemsPerPage: number) {
-
-//       var r: PagedResults = {
-//           results: FAKE_PRODUCTS,
-//           pageSize: 5,
-//           currentPage: 1,
-//           pageCount: 20,
-//           rowCount: 100,
-//           lastRowOnPage: 0,
-//           firstRowOnPage: 0,
-          
-//       };
-//       return of(r);
-
-//   }
-// }
-// export class MatDialogStub {}
 
 export class ProductServiceStub {
 
-    // getBySubCatAndSort(productSubCategoryId: number) {
-    //     var r = FAKE_PRODUCTS.filter(product => {return product.productSubCategory.productSubCategoryId == productSubCategoryId});
-    //     return of(r);
-    // }
   getBySubCatPaged(productSubCategoryId: number, page: number, itemsPerPage: number) {
 
-    console.log("getBySubCatPaged.productSubCategoryId: " + productSubCategoryId)
     var p = FAKE_PRODUCTS.filter(product => {return product.productSubCategory.productSubCategoryId == productSubCategoryId});
-    console.log("getBySubCatPaged.p: " + JSON.stringify(p))
     var l = p.length;
-    console.log("p.length: " + p.length);
 
-    // page >= 1
-    //var start = page - 1;
     var start = ((page-1) * itemsPerPage);
     var end = start + itemsPerPage;
     if (end > p.length) {
       end = end - (end - p.length)
-      // end = (p.length - (page * itemsPerPage));
     }
-  // if (page * itemsPerPage > p.length) {
-  //       end = (p.length - (page * itemsPerPage));
-  //   }
-    console.log("start: " + start);
-    console.log("end: " + end);
+
     p = p.slice(start, end);
 
     var r: PagedResults = {
@@ -249,26 +211,6 @@ export class ProductServiceStub {
         
     };
 
-    //console.log("PagedResults.results: " + r.results);
-    console.log("PagedResults.pageSize: " + r.pageSize);
-    console.log("PagedResults.currentPage: " + r.currentPage);
-    console.log("PagedResults.pageCount: " + r.pageCount);
-    console.log("PagedResults.rowCount: " + r.rowCount);
-    console.log("PagedResults.lastRowOnPage: " + r.lastRowOnPage);
-    console.log("PagedResults.firstRowOnPage: " + r.firstRowOnPage);
-    // console.log("start: " + start);
-    // console.log("end: " + end);
-
-    // var r: PagedResults = {
-    //     results: FAKE_PRODUCTS,
-    //     pageSize: 5,
-    //     currentPage: 1,
-    //     pageCount: 20,
-    //     rowCount: 100,
-    //     lastRowOnPage: 0,
-    //     firstRowOnPage: 0,
-        
-    // };
     return of(r);
 
   }
