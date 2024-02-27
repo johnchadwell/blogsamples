@@ -31,110 +31,20 @@ describe('ProductListComponent', () => {
   let component: ProductListComponent;
   let fixture: ComponentFixture<ProductListComponent>;
   let openDialog: any;
-  // let editDialog: any;
-
-  // jasmine.createSpyObj('ProductService', ['getBySubCatPaged']).and.returnValue(of(
-  //   {
-  //     results: FAKE_PRODUCTS,
-  //     pageSize: 5,
-  //     currentPage: 1,
-  //     pageCount: 20,
-  //     rowCount: 100,
-  //     lastRowOnPage: 0,
-  //     firstRowOnPage: 0,
-      
-  //   }));
-  
-  // const mockedProductService = jasmine.createSpyObj('ProductService', ['getBySubCatPaged']);
-  // mockedProductService.getBySubCatPaged.and.returnValue(of(
-  //   {
-  //     results: FAKE_PRODUCTS,
-  //     pageSize: 5,
-  //     currentPage: 1,
-  //     pageCount: 20,
-  //     rowCount: 100,
-  //     lastRowOnPage: 0,
-  //     firstRowOnPage: 0,
-      
-  //   }));
-
-  // const mockedProductCategoryService = jasmine.createSpyObj('ProductCategoryService', ['get']);
-  // const mockedProductSubCategoryService = jasmine.createSpyObj('ProductSubCategoryService', ['getByCategoryId']);
-
-  // mockedProductCategoryService.get.and.returnValue(of(FAKE_PRODUCTCATEGORY));
-  // mockedProductSubCategoryService.getByCategoryId.and.returnValue(of(FAKE_PRODUCTSUBCATEGORY));
-
-  // let fakeProductService: ProductService;
-  // let fakeProductCategoryService: ProductCategoryService;
-  // let fakeProductSubCategoryService: ProductSubCategoryService;
-
+ 
   beforeEach(async () => {
 
-    // fakeProductService = jasmine.createSpyObj<ProductService>(
-    //   'ProductService',
-    //   {
-    //     getBySubCatPaged: of(
-    //       {
-    //         results: FAKE_PRODUCTS,
-    //         pageSize: 5,
-    //         currentPage: 1,
-    //         pageCount: 20,
-    //         rowCount: 100,
-    //         lastRowOnPage: 0,
-    //         firstRowOnPage: 0,
-            
-    //       })
-    //   }
-    // );
-
-    // fakeProductCategoryService = jasmine.createSpyObj<ProductCategoryService>(
-    //   'ProductCategoryService',
-    //   {
-    //     get: of(FAKE_PRODUCTCATEGORY)
-    //   }
-    // );
-
-    // fakeProductSubCategoryService = jasmine.createSpyObj<ProductSubCategoryService>(
-    //   'ProductSubCategoryService',
-    //   {
-    //     getByCategoryId: of(FAKE_PRODUCTSUBCATEGORY)
-    //   }
-    // );
-
+ 
     await TestBed.configureTestingModule({
       imports: [MatTableModule, MatFormFieldModule, MatSelectModule, MatSortModule, MatPaginatorModule, FormsModule, BrowserAnimationsModule, MatIconModule, MatDialogModule  ],
       declarations: [ ProductListComponent ],
       providers: [
-        // {provide: ProductCategoryService, useValue: mockedProductCategoryService},
-        // {provide: ProductSubCategoryService, useValue: mockedProductSubCategoryService},
-        // {provide: ProductService, useValue: mockedProductService},
-        // {provide: ProductCategoryService, useValue: fakeProductCategoryService},
-        // {provide: ProductSubCategoryService, useValue: fakeProductSubCategoryService},
-        // {provide: ProductService, useValue: fakeProductService},
       {provide: ProductCategoryService, useClass: ProductCategoryServiceStub},
       {provide: ProductSubCategoryService, useClass: ProductSubCategoryServiceStub},
       {provide: ProductService, useClass: ProductServiceStub},
-      // {provide: MatDialog, useClass: MatDialogStub}
-
-      // {provide: MatDialog, useClass: OpenDialogMock}
-
-      // {provide: openEditModal, useClass: OpenEditModalMock},
-
-      // {provide: MatDialog, useValue: jasmine.createSpyObj<MatDialog>(['open']).open.and.returnValue(
-      //   afterClosed() {
-      //     return of('your result');
-      //   }
-      //   )}
-
-
       ]
     })
     .compileComponents();
-
-    // fixture = TestBed.createComponent(ProductListComponent);
-    // fixture.detectChanges();
-    // loader = TestbedHarnessEnvironment.loader(fixture);
-    // component = fixture.componentInstance;
 
     fixture = TestBed.createComponent(ProductListComponent);
     component = fixture.componentInstance;
@@ -145,56 +55,8 @@ describe('ProductListComponent', () => {
 
 
   it('should create', () => {
-    // spyOn(component, "getCategories").and.returnValue(of{});
-    // spyOn(component, "getBySubCatPaged").and.returnValue(of{FAKE_PRODUCTSUBCATEGORY});
-    // console.log("should create");
-    // jasmine.createSpyObj('ProductService', ['getBySubCatPaged']).and.returnValue(of(
-    //   {
-    //     results: FAKE_PRODUCTS,
-    //     pageSize: 5,
-    //     currentPage: 1,
-    //     pageCount: 20,
-    //     rowCount: 100,
-    //     lastRowOnPage: 0,
-    //     firstRowOnPage: 0,
-        
-    //   }));
-      
       expect(component).toBeTruthy();
   });
-
-//   // it('should call openDialog', async() => {
-//   //   const spy = spyOn(openDialog, 'open').and.callThrough();
-//   //   component.openNewModal();
-//   //   fixture.detectChanges();
-
-//   //   expect(openDialog.open.calls.count()).toBe(1);
-
-//   //   // const select = await loader.getAllHarnesses(MatSelectHarness);
-//   //   // console.log("select.length " + select.length);
-
-//   //   // const popUpHeader = document.getElementsByTagName('h2')[0] as HTMLHeadElement;
-//   //   // expect(popUpHeader.innerText).toEqual('Welcome Samuel');
-
-//   // })  
-
-
-//   // it('should call editDialog and openDialog when clicking on edit icon in table row.', async () => {
-
-//   //   spyOn(component, 'openEditModal').and.callThrough();
-//   //   spyOn(openDialog, 'open').and.callThrough();
-
-//   //   let tableRows = fixture.nativeElement.querySelectorAll('tr');
-//   //   expect(tableRows.length).toBe(6);
-
-//   //   let row = tableRows[1];
-
-//   //   const tds = row.querySelectorAll('td');
-//   //   console.log(tds[6].innerHTML);
-//   //   tds[6].querySelector('a').click();
-//   //   // expect(component.openEditModal.call.count()).toBe(1);
-//   //   expect(openDialog.open.calls.count()).toBe(1);
-//   // });
 
 //   // BEGIN PART A
 
@@ -246,6 +108,7 @@ describe('ProductListComponent', () => {
   });
 
 
+// BEGING PART B
 // BEGING DROP-DOWNs
 
   it('should load all select drop-down control harnesses', async () => {
