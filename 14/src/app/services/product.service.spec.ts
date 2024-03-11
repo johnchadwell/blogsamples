@@ -1,24 +1,9 @@
 import { TestBed, inject, fakeAsync } from '@angular/core/testing';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ProductService } from './product.service';
-import { HttpClientTestingModule,HttpTestingController  } from '@angular/common/http/testing';
-import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http"; // Import 
+import { HttpClientTestingModule, HttpTestingController, TestRequest  } from '@angular/common/http/testing';
 import { Product } from '../models/product';
-import { of } from 'rxjs';
-
-// import { environment } from '../../environments/environment';
-
-// let env = {
-//   production: true,
-//   apiUrl: "http://localhost", 
-//   clientId:  '#{clientId}#',
-//   authority:  '#{authority}#',
-//   redirectUri:  '#{redirectUri}#',
-//   scope:  '#{scope}#',
-// };
-
-
-
+import {PagedResults} from '../models/responses/pagedresults';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 const FAKE_PRODUCTS: Product[] = 
 [
@@ -36,172 +21,239 @@ const FAKE_PRODUCTS: Product[] =
   }
 ]
 
+let controller: HttpTestingController;
 
 describe('ProductService', () => {
-  // let productService1: ProductService;
   let productService: ProductService;
-  let controller: HttpTestingController;
-  // let httpClientSpy: jasmine.SpyObj<HttpClient>;
-  let httpClient: HttpClient;
 
   beforeEach(() => {
     TestBed.configureTestingModule(
       {   
         imports: [HttpClientTestingModule],
-        // providers: [
-        //   {provide: environment, useValue: env}
-        // ] 
-        // providers: [ProductService] 
-        // providers: [
-        //   {provide: HttpClient, useValue: httpClient}
-        // ] 
-
       }
     );
     productService = TestBed.inject(ProductService);
     controller = TestBed.inject(HttpTestingController);    
-    httpClient = TestBed.inject(HttpClient);
-
-    // httpClientSpy = jasmine.createSpyObj('HttpClient', ['get']);
-    // productService1 = new ProductService(httpClientSpy);    
 
   });
-  // afterEach(() => {
-  //   controller.verify();
-  // });  
 
   it('should be created', () => {
     expect(productService).toBeTruthy();
   });
 
+  it('should get all products', function() {
+    console.log("product.get");
 
-  // it('should get all products5', function() {
-  //   console.log("products5");
+    productService.get().subscribe(
+      (products) => {
+        expect(products).toEqual(FAKE_PRODUCTS);
+      expect(req.request.url.includes('/api/v1/Product')).toBeTrue();
+      expect(req.request.method).toBe('GET');
+  }
+    );
 
-  //   productService.get().subscribe(
-  //     (products) => {
-  //       expect(products).toEqual(FAKE_PRODUCTS);
-  //     }
-  //   );
+    const req = controller.expectOne(() => true);
+    req.flush(FAKE_PRODUCTS);
+    controller.verify();
 
+  });
 
-  //   // const req = controller.expectOne('#{apiUrl}#/api/v1/Products');
-  //   //const req = controller.expectOne('https://localhost:5003/api/v1/Products');
-  //   // const req = controller.expectOne(() => true);
-  //   // expect(req.request.url.includes('/api/v1/Products')).toBeTrue();
-  //   // expect(req.request.method).toBe('GET');
-  //   // req.flush(FAKE_PRODUCTS);
-  //   // httpTestingController.verify();
+  it('should get product by Id', function() {
+    console.log("product.getById");
 
-  // });
-
-
-// // no mock - not real - never calls get
-//   it('should get all products0', () => {
-//     console.log("products0");
-//     // Make an HTTP GET request
-//     httpClient.get<Product[]>('/api/v1/Products')
-//       .subscribe(data =>
-//         // When observable resolves, result should match test data
-//         expect(data).toEqual(FAKE_PRODUCTS)
-//       );
-
-//     // The following `expectOne()` will match the request's URL.
-//     // If no requests or multiple requests matched that URL
-//     // `expectOne()` would throw.
-//     const req = controller.expectOne('/api/v1/Products');
-
-//     // Assert that the request is a GET.
-//     expect(req.request.method).toEqual('GET');
-
-//     // Respond with mock data, causing Observable to resolve.
-//     // Subscribe callback asserts that correct data was returned.
-//     req.flush(FAKE_PRODUCTS);
-
-//     // Finally, assert that there are no outstanding requests.
-//     controller.verify();
-
-//   });
-
-//   // https://angular.io/guide/testing-services
-//   // https://stackoverflow.com/questions/52283055/angular-service-testing-cannot-find-name-asyncdata
-// it('should get all products1', (done: DoneFn) => {
-//   console.log("products1");
-
-//   httpClientSpy.get.and.returnValue(of(FAKE_PRODUCTS));
-
-//   productService1.get().subscribe({
-//     next: (products) => {
-//       expect(products).toEqual(FAKE_PRODUCTS);
-//       done();
-//     },
-//     error: done.fail,
-//   });
-//   expect(httpClientSpy.get.calls.count()).withContext('one call').toBe(1);
-// });  
-
-  // it('should get all products2', () => {
-  //   console.log("products2");
-
-  //   productService.get().subscribe(
-  //     (products) => {
-  //       expect(products).toEqual(FAKE_PRODUCTS);
-  //     }
-  //   );
+    productService.getById(1).subscribe(
+      (product) => {
+        expect(product).toEqual(FAKE_PRODUCTS[0]);
+      }
+    );
 
 
-  //   // const req = controller.expectOne('#{apiUrl}#/api/v1/Products');
-  //   //const req = controller.expectOne('https://localhost:5003/api/v1/Products');
-  //   const req = controller.expectOne(() => true);
-  //   expect(req.request.url.includes('/api/v1/Products')).toBeTrue();
-  //   expect(req.request.method).toBe('GET');
-  //   req.flush(FAKE_PRODUCTS);
+    // const req = controller.expectOne('#{apiUrl}#/api/v1/Products');
+    // const req = controller.expectOne('https://localhost:5003/api/v1/Products');
+    const req = controller.expectOne(() => true);
+    expect(req.request.url.includes('/api/v1/Product/1')).toBeTrue();
+    expect(req.request.method).toBe('GET');
+    req.flush(FAKE_PRODUCTS[0]);
+    controller.verify();
 
-  // });
-
-  // it('should get all products3', function() {
-  //   console.log("products3");
-
-  //   productService.get().subscribe(
-  //     (products) => {
-  //       expect(products).toEqual(FAKE_PRODUCTS);
-  //     }
-  //   );
+  });
 
 
-  //   // const req = controller.expectOne('#{apiUrl}#/api/v1/Products');
-  //   //const req = controller.expectOne('https://localhost:5003/api/v1/Products');
-  //   const req = controller.expectOne(() => true);
-  //   expect(req.request.url.includes('/api/v1/Products')).toBeTrue();
-  //   expect(req.request.method).toBe('GET');
-  //   req.flush(FAKE_PRODUCTS);
+  // with catchError and handleError - server side
+  it('throws server side error', () => {
 
-  // });
+    productService.get().subscribe({
+      next: (products) => {
+        console.log("products: " + JSON.stringify(products))
+        fail('Should have failed with 404 error');
+      },
+      // error: (error: HttpErrorResponse) => {
+      error: (error: string) => {
 
+        console.log("error: " + error)
+        expect(error).toMatch('404 Not Found');
+        // expect(error).toMatch('999 Whatever');
+        expect(req.request.url.includes('/api/v1/Products')).toBeTrue();
+        expect(req.request.method).toBe('GET');
+      }
 
+    });
 
-  // it(
-  //   'should get products4',
-  //   fakeAsync(
-  //   inject(
-  //     [HttpTestingController, ProductService],
-  //     (controller: HttpTestingController, dataService: ProductService) => {
-  //       console.log("products4");
-  //       productService.get().subscribe((products) => {
-  //         expect(products).toEqual(FAKE_PRODUCTS);
-  //       });
+    const req = controller.expectOne(() => true);
+    // req.flush('blah blah', { status: 999, statusText: 'Whatever'});
+    req.flush('404 error', { status: 404, statusText: 'Not Found'});
+    controller.verify();
 
-  //       const req = controller.expectOne(() => true);
-
-  //       expect(req.cancelled).toBeFalsy();
-  //       expect(req.request.responseType).toEqual('json');
-  //       expect(req.request.url.includes('/api/v1/Products')).toBeTrue();
-  //       expect(req.request.method).toBe('GET');
-  //       req.flush(FAKE_PRODUCTS);
-
-  //       controller.verify();
-
-  // })));
+    
+    //req.error({} => {new ErrorEvent()})
+    //req.error(new ProgressEvent('error'), { status: 401 });
+  });
 
 
+  it('throws server side error using ProgressEvent', () => {
+
+    productService.get().subscribe({
+      next: (products) => {
+        console.log("products: " + JSON.stringify(products))
+        fail('Should have failed with 404 error');
+      },
+      // error: (error: HttpErrorResponse) => {
+      error: (error: string) => {
+
+        console.log("error: " + error)
+        expect(error).toMatch('500 Internal Error');
+        expect(req.request.url.includes('/api/v1/Products')).toBeTrue();
+        expect(req.request.method).toBe('GET');
+      }
+
+    });
+
+    const req = controller.expectOne(() => true);
+    const mockError = new ProgressEvent('API error');
+    req.error(mockError, { status: 500, statusText: 'Internal Error'});
+    controller.verify();
+  });
+
+  it('should create product', function() {
+    console.log("products.create");
+
+    const product = {
+      productId: -1,  name: "Fir S4S Kiln-dried Lumber", description: "2-in x 4-in x 12-ft", unitPrice: 6.32, isDeleted: false,
+      productGuid: "3E8C64F8-CDCA-4241-ABA7-926B9CE90792",
+      productCategory: {productCategoryId: 1,name: "Building Supplies Lumber",isDeleted: false},
+      productSubCategory: {
+        productSubCategoryId: 1,
+        name: "Dimensional Lumber",
+        isDeleted: false,
+        productCategory: {productCategoryId: 1,name: "Building Supplies Lumber",isDeleted: false}
+        }
+      }
+
+    productService.create(product).subscribe(
+      (products) => {
+        expect(products.productId).toEqual(3);
+        console.log("req.request.url: " + req.request.url);
+        expect(req.request.url.includes('/api/v1/Product')).toBeTrue();
+        expect(req.request.method).toBe('POST');
+    });
+
+    const req = controller.expectOne(() => true);
+    product.productId = 3;
+    req.flush(product);
+    controller.verify();
+
+  });
+
+  it('should delete product', function() {
+    console.log("products.delete");
+
+    productService.delete(1).subscribe({
+      next: (data) => {
+        console.log("data: " + JSON.stringify(data))
+        expect(req.request.url.includes('/api/v1/Product/1')).toBeTrue();
+        expect(req.request.method).toBe('DELETE');
+        expect(data).toEqual("");
+        // how to test for status 204 if not error
+    },
+      error: (error: string) => {
+        console.log("error: " + error)
+        fail('Should have deleted successfully');
+      }
+    });
+
+    const req = controller.expectOne(() => true);
+    req.flush('', { status: 204, statusText: 'No Data' });
+    controller.verify();
+
+  });
+
+  it('should update product', function() {
+    console.log("products.delete");
+
+    const product = {
+      productId: 1,  name: "Fir S4S Kiln-dried Lumber", description: "2-in x 4-in x 12-ft", unitPrice: 9.99, isDeleted: false,
+      productGuid: "3E8C64F8-CDCA-4241-ABA7-926B9CE90792",
+      productCategory: {productCategoryId: 1,name: "Building Supplies Lumber",isDeleted: false},
+      productSubCategory: {
+        productSubCategoryId: 1,
+        name: "Dimensional Lumber",
+        isDeleted: false,
+        productCategory: {productCategoryId: 1,name: "Building Supplies Lumber",isDeleted: false}
+        }
+      }
+
+
+    productService.update(product).subscribe({
+      next: (data) => {
+        console.log("data: " + JSON.stringify(data))
+        expect(req.request.url.includes('/api/v1/Product')).toBeTrue();
+        expect(req.request.method).toBe('PUT');
+        expect(data).toEqual(product);
+        // how to test for status 204 if not error
+    },
+      error: (error: string) => {
+        console.log("error: " + error)
+        fail('Should have updated successfully');
+      }
+    });
+
+    const req = controller.expectOne(() => true);
+    req.flush(product);
+    controller.verify();
+
+  });
+
+
+  it('should get paged products', function() {
+    console.log("products.getByCatPaged");
+
+  const pagedResults = {
+    results: FAKE_PRODUCTS,
+    currentPage: 1,
+    pageCount: 1,
+    pageSize: 5,
+    rowCount: 2,
+    firstRowOnPage: 1,
+    lastRowOnPage: 2
+  } 
+  
+    productService.getBySubCatPaged(1,1,5).subscribe({
+      next: (data) => {
+        console.log("data: " + JSON.stringify(data))
+        expect(req.request.url.includes('/api/v1/ProductsBySubCatPaged/1/1/5')).toBeTrue();
+        expect(req.request.method).toBe('GET');
+        expect(data).toEqual(pagedResults);
+    },
+      error: (error: string) => {
+        console.log("error: " + error)
+        fail('Should have returned paged results');
+      }
+    });
+
+    const req = controller.expectOne(() => true);
+    req.flush(pagedResults);
+    controller.verify();
+
+  });
 });
+
