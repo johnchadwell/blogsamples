@@ -64,6 +64,8 @@ describe('ProductService', () => {
     productService.getById(1).subscribe(
       (product) => {
         expect(product).toEqual(FAKE_PRODUCTS[0]);
+        expect(req.request.url.includes('/api/v1/Product/1')).toBeTrue();
+        expect(req.request.method).toBe('GET');
       }
     );
 
@@ -71,8 +73,6 @@ describe('ProductService', () => {
     // const req = controller.expectOne('#{apiUrl}#/api/v1/Products');
     // const req = controller.expectOne('https://localhost:5003/api/v1/Products');
     const req = controller.expectOne(() => true);
-    expect(req.request.url.includes('/api/v1/Product/1')).toBeTrue();
-    expect(req.request.method).toBe('GET');
     req.flush(FAKE_PRODUCTS[0]);
     controller.verify();
 
