@@ -94,7 +94,9 @@ describe('ProductService', () => {
     productService.get().subscribe({
       next: (products) => {
         expect(products).toEqual(FAKE_PRODUCTS);
-        tick(1000);
+        tick();
+        //flush();
+        //flushMicrotasks();
       },
       error: fail,
     });
